@@ -1,7 +1,9 @@
-export class negociacaoController{
-    private _inputData;
-    private _inputQuantidade;
-    private _inputValor;
+import { Negociacao } from "./negociacao.js";
+
+export class NegociacaoController{
+    private _inputData : HTMLInputElement;
+    private _inputQuantidade : HTMLInputElement;
+    private _inputValor : HTMLInputElement;
 
     constructor() {
         this._inputData = document.querySelector('#data');
@@ -9,9 +11,26 @@ export class negociacaoController{
         this._inputValor = document.querySelector('#valor');
     }
 
-    adiciona(event) {
-        console.log(this._inputData.value);
-        console.log(this._inputQuantidade.value);
-        console.log(this._inputValor.value);
+    adiciona() : void {
+        const negociacao = this.criaNegociacao();
+        console.log(negociacao);
+        this.limpaFormulario();
+    }
+
+    criaNegociacao() : Negociacao {
+        const exp = /-/g;
+        // substitui o - por , para o Date entender
+        const date = new Date(this._inputData.value.replace(exp, ','));
+        const quantidade = parseInt(this._inputQuantidade.value);
+        const valor = parseFloat(this._inputValor.value);
+        const negociacao = new Negociacao(date,quantidade,valor);
+        return negociacao;
+    }
+
+    limpaFormulario() : void {
+        this._inputData.value = '';
+        this._inputQuantidade.value = '';
+        this._inputValor.value = '';
+        this._inputData.focus();
     }
 }
